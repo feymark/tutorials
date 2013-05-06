@@ -1,4 +1,0 @@
-tutorials
-=========
-
-OpenFOAM tutorials
