@@ -42,4 +42,10 @@ timeFormat                 general;
 
 runTimeModifiable          yes;
 
+libs
+(
+    "libILES.so"
+    "librampInletVelocityFvPatchVectorField.so"
+);
+
 // ************************************************************************* //

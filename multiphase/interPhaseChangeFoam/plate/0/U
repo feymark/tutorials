@@ -27,8 +27,11 @@ boundaryField
     }
     inlet
     {
-        type            fixedValue;
-        value           uniform (5 0 0);
+        type            rampInletVelocity;
+        t0              0;
+        t1              1;
+        Uinf            (5 0 0);
+        value           uniform (0 0 0);
     }
     outlet
     {
