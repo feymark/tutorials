@@ -1,0 +1,115 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    alpha1
+    {
+        maxUnboundedness 1e-5;
+        CoCoeff          0;
+        maxIter          5;
+        nLimiterIter     2;
+
+        solver           PBiCG;
+        preconditioner   DILU;
+        tolerance        1e-6;
+        relTol           0.1;
+    };
+
+    U
+    {
+        type            coupled;
+        solver          PBiCCCG;
+        preconditioner  DILU;
+        tolerance       (1e-06 1e-06 1e-06);
+        relTol          (0 0 0);
+    };
+
+    UFinal
+    {
+        type            coupled;
+        solver          PBiCCCG;
+        preconditioner  DILU;
+        tolerance       (1e-06 1e-06 1e-06);
+        relTol          (0 0 0);
+    };
+
+    p_rgh
+    {
+        solver           GAMG;
+        tolerance        1e-6;
+        relTol           0.1;
+
+        smoother         DICGaussSeidel;
+        nPreSweeps       0;
+        nPostSweeps      2;
+
+        cacheAgglomeration true;
+
+        nCellsInCoarsestLevel 10;
+        agglomerator     faceAreaPair;
+        mergeLevels      1;
+
+        maxIter          50;
+    };
+
+    pcorr
+    {
+        $p_rgh;
+        relTol           0;
+    };
+
+    p_rghFinal
+    {
+        solver            PCG;
+        preconditioner
+        {
+            preconditioner  GAMG;
+
+            tolerance        1e-6;
+            relTol           0;
+
+            nVcycles         2;
+
+            smoother         DICGaussSeidel;
+            nPreSweeps       0;
+            nPostSweeps      2;
+            nFinestSweeps    2;
+
+            cacheAgglomeration false;
+            nCellsInCoarsestLevel 10;
+            agglomerator     faceAreaPair;
+            mergeLevels      1;
+        };
+        tolerance        1e-6;
+        relTol           0;
+        maxIter          50;
+    };
+}
+
+PIMPLE
+{
+    nMomentumPredictors        2;
+    nOuterCorrectors           4;
+    nCorrectors                2;
+    nNonOrthogonalCorrectors   1;
+
+    cAlpha                     0;
+    nAlphaCorr                 2;
+    nAlphaSubCycles            1;
+}
+
+// ************************************************************************* //
