@@ -136,9 +136,10 @@ PIMPLE
     nCorrectors                2;
     nNonOrthogonalCorrectors   0;
 
+    boundAlpha                 yes;
     cAlpha                     0;
-    nAlphaCorr                 2;
-    nAlphaSubCycles            1;
+    nAlphaOuterCorrectors      2;
+    nAlphaCorr                 1;
 }
 
 // ************************************************************************* //
